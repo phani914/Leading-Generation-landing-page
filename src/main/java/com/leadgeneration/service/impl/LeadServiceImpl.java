@@ -44,7 +44,45 @@ public class LeadServiceImpl implements LeadService {
     }
 
     @Override
+    public Lead getLeadById(Long id) {
+        return leadRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Lead Not Found"));
+    }
+
+    @Override
     public List<Lead> getLeadsByTechnology(String technology) {
         return leadRepository.findByInterestedTechnology(technology);
+    }
+    @Override
+    public List<Lead> getLeadsByStatus(LeadStatus status) {
+        return leadRepository.findByStatus(status);
+    }
+
+    @Override
+    public Lead updateLeadStatus(Long id, LeadStatus status) {
+
+        Lead lead = leadRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Lead Not Found"));
+
+        lead.setStatus(status);
+
+        return leadRepository.save(lead);
+    }
+
+    @Override
+    public List<Lead> getLeadsByTrainingMode(String mode) {
+        return leadRepository.findByTrainingMode(mode);
+    }
+
+    @Override
+    public void deleteLead(Long id) {
+
+        Lead lead = leadRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Lead Not Found"));
+
+        leadRepository.delete(lead);
     }
 }
