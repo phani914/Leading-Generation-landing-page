@@ -1,42 +1,70 @@
 package com.leadgeneration.service.impl;
 
 import com.leadgeneration.dto.request.LeadRequestDto;
+import com.leadgeneration.dto.request.LeadRequestDto;
 import com.leadgeneration.entity.Lead;
 import com.leadgeneration.enums.LeadStatus;
+import com.leadgeneration.exception.ResourceNotFoundException;
 import com.leadgeneration.repository.LeadRepository;
+import com.leadgeneration.service.EmailService;
 import com.leadgeneration.service.LeadService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class LeadServiceImpl implements LeadService {
 
     private final LeadRepository leadRepository;
 
-    public LeadServiceImpl(LeadRepository leadRepository) {
-        this.leadRepository = leadRepository;
-    }
+    private final EmailService emailService;
 
     @Override
-    public Lead saveLead(LeadRequestDto request) {
+    public Lead saveLead(@Valid LeadRequestDto request) {
 
-        Lead lead = new Lead();
+        Lead lead = Lead.builder()
+                .fullName(request.getFullName())
+                .email(request.getEmail())
+                .mobileNumber(request.getMobileNumber())
+                .qualification(request.getQualification())
+                .interestedTechnology(request.getInterestedTechnology())
+                .trainingMode(request.getTrainingMode())
+                .message(request.getMessage())
+                .status(LeadStatus.NEW)
+                .createdAt(LocalDateTime.now())
+                .build();
 
-        lead.setFullName(request.getFullName());
-        lead.setEmail(request.getEmail());
-        lead.setMobileNumber(request.getMobileNumber());
-        lead.setQualification(request.getQualification());
-        lead.setInterestedTechnology(request.getInterestedTechnology());
-        lead.setTrainingMode(request.getTrainingMode());
-        lead.setMessage(request.getMessage());
+        Lead savedLead = leadRepository.save(lead);
 
-        lead.setStatus(LeadStatus.NEW);
-        lead.setCreatedAt(LocalDateTime.now());
+        log.info("Lead created successfully with id {}", savedLead.getLeadId());
 
-        return leadRepository.save(lead);
+        try {
+            emailService.sendUserConfirmationEmail(savedLead);
+            emailService.sendAdminNotificationEmail(savedLead);
+
+            log.info(
+                    "Lead emails triggered successfully for {}",
+                    savedLead.getEmail()
+            );
+
+        } catch(Exception e) {
+
+            log.error(
+                    "Email sending failed for lead {}",
+                    savedLead.getLeadId(),
+                    e
+            );
+        }
+
+        return savedLead;
     }
+
 
     @Override
     public List<Lead> getAllLeads() {
@@ -47,42 +75,34 @@ public class LeadServiceImpl implements LeadService {
     public Lead getLeadById(Long id) {
         return leadRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Lead Not Found"));
+                        new ResourceNotFoundException(
+                                "Lead not found with id : " + id
+                        )
+                );
     }
 
     @Override
     public List<Lead> getLeadsByTechnology(String technology) {
         return leadRepository.findByInterestedTechnology(technology);
     }
+
     @Override
     public List<Lead> getLeadsByStatus(LeadStatus status) {
-        return leadRepository.findByStatus(status);
+        return List.of();
     }
 
     @Override
     public Lead updateLeadStatus(Long id, LeadStatus status) {
-
-        Lead lead = leadRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Lead Not Found"));
-
-        lead.setStatus(status);
-
-        return leadRepository.save(lead);
+        return null;
     }
 
     @Override
     public List<Lead> getLeadsByTrainingMode(String mode) {
-        return leadRepository.findByTrainingMode(mode);
+        return List.of();
     }
 
     @Override
     public void deleteLead(Long id) {
 
-        Lead lead = leadRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Lead Not Found"));
-
-        leadRepository.delete(lead);
     }
 }

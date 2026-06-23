@@ -10,15 +10,33 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http) throws Exception {
 
         http
+                .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/api/leads/**",
+                                "/api/admin/leads/**"
+                        ).permitAll()
+
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(
+                        Customizer.withDefaults()
+                );
 
         return http.build();
+
+
     }
 }
