@@ -1,6 +1,6 @@
 package com.leadgeneration.service.impl;
 
-import com.leadgeneration.dto.request.LeadRequestDTO;
+import com.leadgeneration.dto.request.LeadRequestDto;
 import com.leadgeneration.entity.Lead;
 import com.leadgeneration.enums.LeadStatus;
 import com.leadgeneration.repository.LeadRepository;
@@ -20,7 +20,7 @@ public class LeadServiceImpl implements LeadService {
     }
 
     @Override
-    public Lead saveLead(LeadRequestDTO request) {
+    public Lead saveLead(LeadRequestDto request) {
 
         Lead lead = new Lead();
 

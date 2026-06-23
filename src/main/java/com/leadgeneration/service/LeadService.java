@@ -1,13 +1,15 @@
 package com.leadgeneration.service;
 
-import com.leadgeneration.dto.request.LeadRequestDTO;
+import com.leadgeneration.dto.request.LeadRequestDto;
+import com.leadgeneration.dto.request.LeadRequestDto;
 import com.leadgeneration.entity.Lead;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 public interface LeadService {
 
-    Lead saveLead(LeadRequestDTO request);
+    Lead saveLead(@Valid LeadRequestDto request);
 
     List<Lead> getAllLeads();
 

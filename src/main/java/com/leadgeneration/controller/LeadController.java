@@ -1,7 +1,7 @@
 package com.leadgeneration.controller;
 
-import com.leadgeneration.dto.request.LeadRequestDTO;
-import com.leadgeneration.dto.response.LeadResponseDTO;
+import com.leadgeneration.dto.request.LeadRequestDto;
+import com.leadgeneration.dto.response.LeadResponseDto;
 import com.leadgeneration.service.LeadService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +19,13 @@ public class LeadController {
     }
 
     @PostMapping
-    public ResponseEntity<LeadResponseDTO> createLead(
-            @Valid @RequestBody LeadRequestDTO request) {
+    public ResponseEntity<LeadResponseDto> createLead(
+            @Valid @RequestBody LeadRequestDto request) {
 
         leadService.saveLead(request);
 
         return ResponseEntity.ok(
-                new LeadResponseDTO(
+                new LeadResponseDto(
                         "success",
                         "Lead submitted successfully"
                 )
