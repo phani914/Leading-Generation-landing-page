@@ -2,8 +2,11 @@ package com.leadgeneration.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
+@Data
 public class LeadRequestDto {
+
     @NotBlank(message = "Full name is required")
     private String fullName;
 
@@ -18,6 +21,4 @@ public class LeadRequestDto {
     private String interestedTechnology;
     private String trainingMode;
     private String message;
-
-    // getters and setters
 }

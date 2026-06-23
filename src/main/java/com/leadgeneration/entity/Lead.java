@@ -2,6 +2,7 @@ package com.leadgeneration.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import lombok.Data;
 
 @Entity
 @Table(name = "leads")
