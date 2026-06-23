@@ -1,0 +1,50 @@
+package com.leadgeneration.service.impl;
+
+import com.leadgeneration.dto.request.LeadRequestDTO;
+import com.leadgeneration.entity.Lead;
+import com.leadgeneration.enums.LeadStatus;
+import com.leadgeneration.repository.LeadRepository;
+import com.leadgeneration.service.LeadService;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class LeadServiceImpl implements LeadService {
+
+    private final LeadRepository leadRepository;
+
+    public LeadServiceImpl(LeadRepository leadRepository) {
+        this.leadRepository = leadRepository;
+    }
+
+    @Override
+    public Lead saveLead(LeadRequestDTO request) {
+
+        Lead lead = new Lead();
+
+        lead.setFullName(request.getFullName());
+        lead.setEmail(request.getEmail());
+        lead.setMobileNumber(request.getMobileNumber());
+        lead.setQualification(request.getQualification());
+        lead.setInterestedTechnology(request.getInterestedTechnology());
+        lead.setTrainingMode(request.getTrainingMode());
+        lead.setMessage(request.getMessage());
+
+        lead.setStatus(LeadStatus.NEW);
+        lead.setCreatedAt(LocalDateTime.now());
+
+        return leadRepository.save(lead);
+    }
+
+    @Override
+    public List<Lead> getAllLeads() {
+        return leadRepository.findAll();
+    }
+
+    @Override
+    public List<Lead> getLeadsByTechnology(String technology) {
+        return leadRepository.findByInterestedTechnology(technology);
+    }
+}
