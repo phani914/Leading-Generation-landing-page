@@ -1,5 +1,5 @@
 import AnimatedSection from "../common/AnimatedSection";
-
+import heroImage from "../../assets/hero-student.jpg";
 
 
 function Hero(){
@@ -140,26 +140,11 @@ function Hero(){
                     ">
 
 
-                        <div className="
-                        text-center
-                        ">
-
-                            <div className="
-                            text-6xl
-                            ">
-                                🚀
-                            </div>
-
-
-                            <p className="
-                            mt-4
-                            text-gray-600
-                            ">
-                                Student Success Illustration
-                            </p>
-
-
-                        </div>
+                        <img src={heroImage} alt="Student Success"
+                        className="rounded-2x1
+                        w-full
+                        h-96
+                        object-cover"/>
 
 
                     </div>
