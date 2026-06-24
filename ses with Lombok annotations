@@ -1,0 +1,54 @@
+[1mdiff --git a/src/main/java/com/leadgeneration/dto/request/LeadRequestDTO.java b/src/main/java/com/leadgeneration/dto/request/LeadRequestDTO.java[m
+[1mindex 99d15bf..ce1ad22 100644[m
+[1m--- a/src/main/java/com/leadgeneration/dto/request/LeadRequestDTO.java[m
+[1m+++ b/src/main/java/com/leadgeneration/dto/request/LeadRequestDTO.java[m
+[36m@@ -2,19 +2,23 @@[m [mpackage com.leadgeneration.dto.request;[m
+ [m
+ import jakarta.validation.constraints.Email;[m
+ import jakarta.validation.constraints.NotBlank;[m
+[32m+[m[32mimport lombok.AllArgsConstructor;[m
+ import lombok.Data;[m
+[32m+[m[32mimport lombok.NoArgsConstructor;[m
+ [m
+ @Data[m
+[31m-public class LeadRequestDTO {[m
+[32m+[m[32m@AllArgsConstructor[m
+[32m+[m[32m@NoArgsConstructor[m
+[32m+[m[32mpublic class LeadRequestDto {[m
+ [m
+[31m-    @NotBlank(message = "Full Name is required")[m
+[32m+[m[32m    @NotBlank(message = "Full name is required")[m
+     private String fullName;[m
+ [m
+[31m-    @Email(message = "Invalid email")[m
+     @NotBlank(message = "Email is required")[m
+[32m+[m[32m    @Email(message = "Email should be valid")[m
+     private String email;[m
+ [m
+[31m-    @NotBlank(message = "Mobile Number is required")[m
+[32m+[m[32m    @NotBlank(message = "Mobile number is required")[m
+     private String mobileNumber;[m
+ [m
+     private String qualification;[m
+[1mdiff --git a/src/main/java/com/leadgeneration/dto/response/LeadResponseDTO.java b/src/main/java/com/leadgeneration/dto/response/LeadResponseDTO.java[m
+[1mindex a49c370..232df63 100644[m
+[1m--- a/src/main/java/com/leadgeneration/dto/response/LeadResponseDTO.java[m
+[1m+++ b/src/main/java/com/leadgeneration/dto/response/LeadResponseDTO.java[m
+[36m@@ -1,14 +1,14 @@[m
+ package com.leadgeneration.dto.response;[m
+ [m
+[31m-public class LeadResponseDTO {[m
+[32m+[m[32mpublic class LeadResponseDto {[m
+ [m
+     private String status;[m
+     private String message;[m
+ [m
+[31m-    public LeadResponseDTO() {[m
+[32m+[m[32m    public LeadResponseDto() {[m
+     }[m
+ [m
+[31m-    public LeadResponseDTO(String status, String message) {[m
+[32m+[m[32m    public LeadResponseDto(String status, String message) {[m
+         this.status = status;[m
+         this.message = message;[m
+     }[m
