@@ -66,22 +66,18 @@ public class AdminController {
 
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping("/reset-password/{email}")
     public ResponseEntity<?> resetPassword(
+            @PathVariable String email,
             @RequestBody ResetPasswordDto request) {
-
 
         return ResponseEntity.ok(
                 adminService.resetPassword(
-                        request.getEmail(),
+                        email,
                         request.getNewPassword(),
                         request.getConfirmPassword()
                 )
         );
-
-
     }
-
-
 
 }
