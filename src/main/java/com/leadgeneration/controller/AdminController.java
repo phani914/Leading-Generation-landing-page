@@ -4,8 +4,7 @@ import com.leadgeneration.dto.ForgotPasswordDto;
 import com.leadgeneration.dto.ResetPasswordDto;
 import com.leadgeneration.dto.VerifyOtpDto;
 import com.leadgeneration.dto.login.AdminLoginDto;
-import com.leadgeneration.dto.register.AdminRegisterDto;
-import com.leadgeneration.entity.Admin;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.leadgeneration.service.AdminService;
@@ -22,14 +21,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Admin> register(
-            @RequestBody AdminRegisterDto request) {
 
-        return ResponseEntity.ok(
-                adminService.register(request)
-        );
-    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(

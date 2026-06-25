@@ -1,7 +1,7 @@
 package com.leadgeneration.service.impl;
 
 import com.leadgeneration.dto.login.AdminLoginDto;
-import com.leadgeneration.dto.register.AdminRegisterDto;
+
 import com.leadgeneration.entity.Admin;
 import com.leadgeneration.repository.AdminRepository;
 import com.leadgeneration.service.AdminService;
@@ -9,6 +9,7 @@ import com.leadgeneration.service.EmailService;
 import com.leadgeneration.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -21,44 +22,24 @@ public class AdminServiceImpl implements AdminService {
     private final EmailService emailService;
     private final JwtUtil jwtUtil;
 
-    @Override
-    public Admin register(AdminRegisterDto request) {
-
-        if (adminRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already registered");
-        }
-
-        if (adminRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already registered");
-        }
-
-        Admin admin = new Admin();
-
-        admin.setUsername(request.getUsername());
-        admin.setEmail(request.getEmail());
-        admin.setPassword(request.getPassword());
-
-        return adminRepository.save(admin);
-    }
 
     @Override
     public String login(AdminLoginDto request) {
 
         Admin admin = adminRepository
-                .findByUsername(request.getUsername())
+                .findByEmail(request.getEmail())
                 .orElseThrow(() ->
-                        new RuntimeException("Invalid Username"));
+                        new RuntimeException("Invalid Email"));
 
         if (!admin.getPassword().equals(request.getPassword())) {
             throw new RuntimeException("Invalid Password");
         }
 
-        return jwtUtil.generateToken(admin.getUsername());
+        return jwtUtil.generateToken(admin.getEmail());
     }
 
     @Override
     public String forgotPassword(String email) {
-
 
         Admin admin = adminRepository
                 .findByEmail(email)
@@ -71,28 +52,25 @@ public class AdminServiceImpl implements AdminService {
                 );
 
         admin.setOtp(otp);
+
         admin.setOtpExpiry(
                 LocalDateTime.now().plusMinutes(5)
         );
 
         adminRepository.save(admin);
+
         emailService.sendOtpEmail(
                 email,
                 otp
         );
 
-// Email send here
-
         return "OTP sent successfully";
-
-
     }
 
     @Override
     public String verifyOtp(
             String email,
             String otp) {
-
 
         Admin admin = adminRepository
                 .findByEmail(email)
@@ -110,9 +88,8 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return "OTP Verified Successfully";
-
-
     }
+
     @Override
     public String resetPassword(
             String email,
@@ -139,12 +116,7 @@ public class AdminServiceImpl implements AdminService {
         adminRepository.save(admin);
 
         return "Password reset successfully";
-
-
     }
-
-
-
 
 
 }

@@ -1,7 +1,7 @@
 package com.leadgeneration.controller;
 
 import com.leadgeneration.dto.login.AdminLoginDto;
-import com.leadgeneration.dto.register.AdminRegisterDto;
+
 import com.leadgeneration.entity.Admin;
 import com.leadgeneration.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,6 @@ public class AuthController {
 
     private final AdminService adminService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Admin> register(
-            @RequestBody AdminRegisterDto request) {
-
-        return ResponseEntity.ok(
-                adminService.register(request)
-        );
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
